@@ -20,7 +20,12 @@ class _UploadPageState extends State<UploadPage> {
     // pick from gallery
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
-    // update from gallery
+    // update image preview
+    if (image != null) {
+      setState(() {
+        _imageFile = File(image.path);
+      });
+    }
   }
 
   // upload
@@ -30,6 +35,19 @@ class _UploadPageState extends State<UploadPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Upload page"),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            _imageFile != null
+                ? Image.file(_imageFile!)
+                : const Text("No image selected.."),
+
+            // pick image button
+            ElevatedButton(
+                onPressed: pickImage, child: const Text("pick image"))
+          ],
+        ),
       ),
     );
   }
